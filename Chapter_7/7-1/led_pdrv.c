@@ -137,6 +137,8 @@ static void led_pdrv_remove(struct platform_device* pdev)
     
     cdev_del(&cur_led->led_cdev);
 
+    iounmap(cur_led->va_ddr);
+
     device_destroy(led_test_class, devno);
 }
 
