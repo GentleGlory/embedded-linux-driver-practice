@@ -1,0 +1,23 @@
+/dts-v1/;
+/plugin/;
+
+/{
+	fragment@0 {
+		target-path = "/";
+        __overlay__ {
+			led_test{
+				compatible = "fire,led_test";
+				#address-cells = <1>;
+				#size-cells = <1>;
+				ranges;
+				status = "okay";
+				
+				led@3F200000{
+					reg = <0x3F200000 0x60>;
+					pin_num = <17>;
+					status = "okay";
+				};
+			};
+		};
+	};
+};
