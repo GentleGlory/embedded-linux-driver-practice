@@ -67,8 +67,6 @@ static int led_probe(struct platform_device *pdev)
     unsigned int val = 0;
     register unsigned int r;
 
-    printk(KERN_INFO "match successed. \n");
-
     led_test_device_node = of_find_node_by_path("/led_test");
     if(!led_test_device_node){
         printk(KERN_INFO"Get led_test_device_node failed.\n");
@@ -92,8 +90,6 @@ static int led_probe(struct platform_device *pdev)
         return -EINVAL; 
     }
     
-    printk(KERN_INFO "match successed. 2, %d\n",led_res.pin_num);
-
     val = ioread32( GPIO_GPFSEL_ADDR(led_res.va_addr, led_res.pin_num));
     val = (val & GPIO_FUNCTION_SELECT_MASK(led_res.pin_num)) | GPIO_FUNCTION_SELECT_OUTPUT(led_res.pin_num);
 	iowrite32(val, GPIO_GPFSEL_ADDR(led_res.va_addr, led_res.pin_num));
@@ -105,7 +101,6 @@ static int led_probe(struct platform_device *pdev)
 	r=150; while(r--){asm volatile("nop");}
 	iowrite32(0, GPIO_GPPUD_ADDR(led_res.va_addr));
 
-    printk(KERN_INFO "match successed. 3\n");
     //Register char dev
     ret = alloc_chrdev_region(&led_devno, 0, DEV_CNT, DEV_NAME);
     if( ret < 0){
@@ -116,8 +111,6 @@ static int led_probe(struct platform_device *pdev)
     led_chr_dev.owner = THIS_MODULE;
     cdev_init(&led_chr_dev, &led_chr_dev_fops);
 
-    printk(KERN_INFO "match successed. 4\n");
-
     ret = cdev_add(&led_chr_dev, led_devno, DEV_CNT);
     if(ret < 0){
         printk(KERN_INFO "fail to add  led_chr_dev\n");
@@ -127,7 +120,6 @@ static int led_probe(struct platform_device *pdev)
     class_led = class_create(DEV_NAME);
 
     device = device_create(class_led, NULL, led_devno, NULL, DEV_NAME "%d", 1);
-    printk(KERN_INFO "match successed. 5\n");
     return 0;
 add_err:
     unregister_chrdev_region(led_devno,DEV_CNT);
