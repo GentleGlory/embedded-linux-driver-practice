@@ -1,0 +1,33 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/{
+	fragment@0 {
+		target-path = "/";
+        __overlay__ {
+			input_button: input_button {
+				status = "okay";
+				compatible = "input_button";
+				pinctrl-names = "default";
+				pinctrl-0 = <&input_button_pin>;
+				interrupt-parent = <&gpio>;
+				interrupts = <17 IRQ_TYPE_EDGE_BOTH>;
+				button-gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&gpio>;
+        __overlay__ {
+			input_button_pin: input_button_pin {
+				brcm,pins = <17>;
+				brcm,function = <0>; //input
+			 	brcm,pull = <0>;
+			};
+		};
+	};
+};
