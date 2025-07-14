@@ -68,7 +68,7 @@ static struct platform_driver my_regulator_driver = {
 
 static struct platform_device *regulator_pdev;
 
-static int my_regulator_test_init(void)
+static int __init my_regulator_test_init(void)
 {
     int ret;
 
@@ -98,7 +98,7 @@ static int my_regulator_test_init(void)
 
 module_init(my_regulator_test_init);
 
-static void my_regulator_test_exit(void)
+static void __exit my_regulator_test_exit(void)
 {
     platform_device_unregister(regulator_pdev);
     platform_device_put(regulator_pdev);
